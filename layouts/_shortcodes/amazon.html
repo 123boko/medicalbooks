@@ -1,0 +1,12 @@
+{{- /* Usage: {{< amazon q="Costanzo Physiology" text="Costanzo Physiology" >}}
+       or with a product ID: {{< amazon asin="XXXXXXXXXX" text="Book title" >}} */ -}}
+{{- $tag := site.Params.amazonTag -}}
+{{- $domain := site.Params.amazonDomain | default "www.amazon.com" -}}
+{{- $text := .Get "text" | default (.Get "q") -}}
+{{- $url := "" -}}
+{{- with .Get "asin" -}}
+  {{- $url = printf "https://%s/dp/%s?tag=%s" $domain . $tag -}}
+{{- else -}}
+  {{- $url = printf "https://%s/s?k=%s&i=stripbooks&tag=%s" $domain (querify "k" ($.Get "q") | strings.TrimPrefix "k=") $tag -}}
+{{- end -}}
+<a href="{{ $url }}" rel="sponsored nofollow noopener" target="_blank">{{ $text }}</a>

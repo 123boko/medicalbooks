@@ -1,0 +1,19 @@
+{{ define "main" }}
+{{- /* One category or one tag. The paginator is created in head.html. */ -}}
+{{ $isTag := eq .Section "tags" }}
+<div class="page">
+  <header class="page-head term-head" style="{{ printf "--c:%s" (partial "cat-color.html" .) | safeCSS }}">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="{{ site.Home.RelPermalink }}">Home</a></li>
+        <li><a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a></li>
+      </ol>
+    </nav>
+    <h1>{{ if $isTag }}Guides tagged “{{ .Title }}”{{ else }}{{ .Title }} textbook guides{{ end }}</h1>
+    <div class="intro">{{ .Content }}</div>
+  </header>
+  <div class="section-title" aria-hidden="true"></div>
+  {{ partial "guide-list.html" (dict "pages" .Paginator.Pages "level" "h2") }}
+  {{ partial "pager.html" . }}
+</div>
+{{ end }}

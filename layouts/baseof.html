@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="masthead">
+    <div class="page">
+      <a class="brand" href="{{ site.Home.RelPermalink }}">
+        <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect x="3" y="6" width="7" height="20" rx="1" fill="#a81e36"/><rect x="12" y="9" width="6" height="17" rx="1" fill="#1f3a6e"/><rect x="20" y="4" width="8" height="22" rx="1" fill="#1e6652"/><rect x="1" y="26" width="30" height="3" fill="currentColor"/></svg>
+        <span>{{ site.Title }}</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        {{- $current := . -}}
+        {{ range site.Menus.main }}
+        <a href="{{ .URL }}"{{ if or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }} aria-current="page"{{ end }}>{{ .Name }}</a>
+        {{ end }}
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    {{ block "main" . }}{{ end }}
+  </main>
+  <footer class="colophon">
+    <div class="page">
+      <p class="disclosure">As an Amazon Associate I earn from qualifying purchases.</p>
+      <p>Guides about choosing study materials. Nothing on this site is medical advice.</p>
+      <nav aria-label="Footer">
+        {{ range site.Menus.footer }}
+        <a href="{{ .URL }}">{{ .Name }}</a>
+        {{ end }}
+      </nav>
+      <p>&copy; {{ now.Year }} {{ site.Title }}</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,68 @@
+# baseURL is overridden automatically by the GitHub Pages workflow.
+baseURL = "https://example.org/"
+locale = "en-US"
+title = "Med Student Bookshelf"
+enableRobotsTXT = true
+
+[params]
+  description = "Plain-English guides to choosing medical textbooks: which book suits which student, and where an older edition is enough."
+  author = "Med Student Bookshelf"
+  # Replace with your Amazon Associates tracking ID once approved.
+  amazonTag = "yourtag-20"
+  amazonDomain = "www.amazon.com"
+
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[pagination]
+  pagerSize = 10
+
+[related]
+  includeNewer = true
+  threshold = 60
+  toLower = true
+  [[related.indices]]
+    name = "categories"
+    weight = 100
+  [[related.indices]]
+    name = "tags"
+    weight = 60
+
+[permalinks]
+  [permalinks.page]
+    guides = "/guides/:slug/"
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.5
+
+[markup.goldmark.renderer]
+  unsafe = false
+
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 3
+
+[[menus.main]]
+  name = "Guides"
+  pageRef = "/guides"
+  weight = 10
+[[menus.main]]
+  name = "Categories"
+  pageRef = "/categories"
+  weight = 15
+[[menus.main]]
+  name = "About"
+  pageRef = "/about"
+  weight = 20
+
+[[menus.footer]]
+  name = "Affiliate disclosure"
+  pageRef = "/disclosure"
+  weight = 10
+[[menus.footer]]
+  name = "Privacy"
+  pageRef = "/privacy"
+  weight = 20

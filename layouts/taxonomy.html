@@ -1,0 +1,21 @@
+{{ define "main" }}
+{{- /* Index of all categories or all tags. */ -}}
+<div class="page">
+  <header class="page-head">
+    <h1>{{ .Title }}</h1>
+    <div class="intro">{{ .Content }}</div>
+  </header>
+  <div class="section-title" aria-hidden="true"></div>
+  <ul class="term-list">
+    {{ range .Data.Terms.Alphabetical }}
+    <li>
+      <a class="term-row" href="{{ .Page.RelPermalink }}">
+        <h2>{{ .Page.Title }}</h2>
+        <span class="count">{{ .Count }} {{ if eq .Count 1 }}guide{{ else }}guides{{ end }}</span>
+        {{ with .Page.Description }}<p>{{ . }}</p>{{ end }}
+      </a>
+    </li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}

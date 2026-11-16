@@ -1,0 +1,15 @@
+{{- /* Expects dict: pages, level ("h2" or "h3") */ -}}
+<ul class="guide-list">
+  {{ range .pages }}
+  <li>
+    <a class="guide-row" href="{{ .RelPermalink }}">
+      {{ partial "cover.html" . }}
+      <div class="guide-text">
+        {{ if eq $.level "h3" }}<h3>{{ .Title }}</h3>{{ else }}<h2>{{ .Title }}</h2>{{ end }}
+        <p>{{ .Description }}</p>
+        <span class="guide-meta">{{ with .GetTerms "categories" }}{{ (index . 0).LinkTitle }}, {{ end }}{{ .ReadingTime }} minute read</span>
+      </div>
+    </a>
+  </li>
+  {{ end }}
+</ul>

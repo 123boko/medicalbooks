@@ -1,0 +1,21 @@
+{{- /* A book card with a buy button.
+   Usage: {{< book q="Costanzo Physiology" title="Costanzo Physiology" by="Linda S. Costanzo" for="Learning concepts quickly" >}}
+   Use asin="PRODUCT_ID" instead of q to link straight to the product page. */ -}}
+{{- $tag := site.Params.amazonTag -}}
+{{- $domain := site.Params.amazonDomain | default "www.amazon.com" -}}
+{{- $title := .Get "title" | default (.Get "q") -}}
+{{- $url := "" -}}
+{{- with .Get "asin" -}}
+  {{- $url = printf "https://%s/dp/%s?tag=%s" $domain . $tag -}}
+{{- else -}}
+  {{- $url = printf "https://%s/s?k=%s&i=stripbooks&tag=%s" $domain (querify "k" ($.Get "q") | strings.TrimPrefix "k=") $tag -}}
+{{- end -}}
+<div class="book" style="{{ printf "--c:%s" (.Get "color" | default (partial "cat-color.html" .Page)) | safeCSS }}">
+  <span class="cover" aria-hidden="true"><span class="cover-cat">{{ .Get "by" }}</span><span class="cover-title">{{ .Get "short" | default $title }}</span><span class="cover-rule"></span></span>
+  <div class="book-text">
+    <p class="book-title">{{ $title }}</p>
+    {{ with .Get "by" }}<p class="book-by">{{ . }}</p>{{ end }}
+    {{ with .Get "for" }}<p class="book-for"><span>Best for</span> {{ . }}</p>{{ end }}
+    <a class="button" href="{{ $url }}" rel="sponsored nofollow noopener" target="_blank" aria-label="Check price on Amazon: {{ $title }}">Check price on Amazon</a>
+  </div>
+</div>

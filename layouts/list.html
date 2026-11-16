@@ -1,0 +1,13 @@
+{{ define "main" }}
+{{- /* Section pages (for example /guides/). The paginator is created in head.html. */ -}}
+<div class="page">
+  <header class="page-head">
+    <h1>{{ .Title }}</h1>
+    <div class="intro">{{ .Content }}</div>
+  </header>
+  {{ partial "category-links.html" . }}
+  <div class="section-title" aria-hidden="true"></div>
+  {{ partial "guide-list.html" (dict "pages" .Paginator.Pages "level" "h2") }}
+  {{ partial "pager.html" . }}
+</div>
+{{ end }}

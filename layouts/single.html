@@ -1,0 +1,55 @@
+{{ define "main" }}
+{{ $isGuide := eq .Section "guides" }}
+<div class="page">
+  <article class="article"{{ if $isGuide }} style="{{ printf "--c:%s" (partial "cat-color.html" .) | safeCSS }}"{{ end }}>
+    <div class="article-main">
+      {{ if $isGuide }}
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="{{ site.Home.RelPermalink }}">Home</a></li>
+          <li><a href="{{ .CurrentSection.RelPermalink }}">{{ .CurrentSection.Title }}</a></li>
+          {{ with .GetTerms "categories" }}{{ with index . 0 }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}{{ end }}
+        </ol>
+      </nav>
+      {{ end }}
+      {{ if $isGuide }}{{ with .GetTerms "categories" }}{{ with index . 0 }}<a class="cat-badge" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}{{ end }}{{ end }}
+      <h1>{{ .Title }}</h1>
+      {{ if $isGuide }}
+      <p class="meta">
+        <span>Updated <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod.Format "January 2, 2006" }}</time></span>
+        <span>{{ .ReadingTime }} minute read</span>
+      </p>
+      {{ with .Params.verdict }}
+      <div class="verdict">
+        <strong>Short answer</strong>
+        <p>{{ . }}</p>
+      </div>
+      {{ end }}
+      <p class="affiliate-note">Book links on this page go to Amazon and earn the site a commission at no extra cost to you. <a href="{{ "disclosure/" | relURL }}">Read the affiliate disclosure</a>.</p>
+      {{ end }}
+      <div class="prose">{{ .Content }}</div>
+      {{ if $isGuide }}
+      {{ with .GetTerms "tags" }}
+      <nav class="chips tags" aria-label="Tags">
+        <span class="chips-label">Tags</span>
+        {{ range . }}<a class="chip" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}
+      </nav>
+      {{ end }}
+      {{ $related := (where site.RegularPages "Section" "guides").Related . | first 3 }}
+      {{ with $related }}
+      <section class="related" aria-labelledby="related">
+        <div class="section-title"><h2 id="related">Related guides</h2></div>
+        {{ partial "guide-list.html" (dict "pages" . "level" "h3") }}
+      </section>
+      {{ end }}
+      {{ end }}
+    </div>
+    {{ if and $isGuide (gt (len .TableOfContents) 80) }}
+    <nav class="toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      {{ .TableOfContents | replaceRE `<nav id="TableOfContents">|</nav>` "" | safeHTML }}
+    </nav>
+    {{ end }}
+  </article>
+</div>
+{{ end }}

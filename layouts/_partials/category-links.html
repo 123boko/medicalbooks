@@ -1,0 +1,12 @@
+{{- with site.Taxonomies.categories -}}
+<ul class="cat-tiles">
+  {{ range .Alphabetical }}
+  <li>
+    <a class="cat-tile" href="{{ .Page.RelPermalink }}" style="{{ printf "--c:%s" (partial "cat-color.html" .Page) | safeCSS }}">
+      <span class="cat-name">{{ .Page.Title }}</span>
+      <span class="cat-count">{{ .Count }} {{ if eq .Count 1 }}guide{{ else }}guides{{ end }}</span>
+    </a>
+  </li>
+  {{ end }}
+</ul>
+{{- end -}}

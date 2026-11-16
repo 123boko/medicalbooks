@@ -1,0 +1,8 @@
+{{- /* Returns the color of a guide's first category, or of a category page itself. */ -}}
+{{- $c := "#5b2a6e" -}}
+{{- if eq .Kind "term" -}}
+  {{- with .Params.color -}}{{- $c = . -}}{{- end -}}
+{{- else -}}
+  {{- with .GetTerms "categories" -}}{{- with (index . 0).Params.color -}}{{- $c = . -}}{{- end -}}{{- end -}}
+{{- end -}}
+{{- return $c -}}

@@ -1,0 +1,52 @@
+{{ define "main" }}
+{{ $guides := (where site.RegularPages "Section" "guides").ByDate.Reverse }}
+<section class="hero-band">
+  <div class="page hero">
+    <div class="hero-copy">
+      <h1>One good textbook per subject is enough.</h1>
+      <p>Side-by-side comparisons of the standard medical textbooks, so you buy the one that fits your course and skip the rest.</p>
+      <a class="button button-light" href="{{ "guides/" | relURL }}">Browse the guides</a>
+    </div>
+    <ul class="shelf" aria-label="Guides by subject">
+      {{ range $i, $p := $guides.Reverse }}
+      <li style="--i: {{ $i }}"><a class="spine" href="{{ $p.RelPermalink }}" title="{{ $p.Title }}" style="{{ printf "--c:%s" (partial "cat-color.html" $p) | safeCSS }}">{{ $p.Params.spine | default $p.Title }}</a></li>
+      {{ end }}
+      <li class="stack" aria-hidden="true" style="--i: {{ len $guides }}"><span></span><span></span><span></span></li>
+    </ul>
+  </div>
+</section>
+
+<div class="page">
+  <section aria-labelledby="by-category">
+    <div class="section-title">
+      <h2 id="by-category">Browse by subject</h2>
+      <a href="{{ "categories/" | relURL }}">See all categories</a>
+    </div>
+    {{ partial "category-links.html" . }}
+  </section>
+
+  {{ with index $guides 0 }}
+  <section aria-labelledby="featured">
+    <div class="section-title"><h2 id="featured">Start here</h2></div>
+    <a class="feature" href="{{ .RelPermalink }}">
+      {{ partial "cover.html" . }}
+      <div class="feature-text">
+        <h3>{{ .Title }}</h3>
+        <p>{{ .Params.verdict | default .Description }}</p>
+        <span class="button">Read the guide</span>
+      </div>
+    </a>
+  </section>
+  {{ end }}
+
+  {{ with after 1 $guides }}
+  <section aria-labelledby="latest">
+    <div class="section-title">
+      <h2 id="latest">More guides</h2>
+      <a href="{{ "guides/" | relURL }}">Browse all guides</a>
+    </div>
+    {{ partial "guide-list.html" (dict "pages" (first 12 .) "level" "h3") }}
+  </section>
+  {{ end }}
+</div>
+{{ end }}

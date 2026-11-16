@@ -1,0 +1,8 @@
+{{- /* A drawn book cover for a guide. Expects a page. Decorative: the guide title sits next to it. */ -}}
+{{- $label := .Params.spine | default .Title -}}
+{{- $cat := "" -}}{{- with .GetTerms "categories" -}}{{- $cat = (index . 0).LinkTitle -}}{{- end -}}
+<span class="cover" style="{{ printf "--c:%s" (partial "cat-color.html" .) | safeCSS }}" aria-hidden="true">
+  <span class="cover-cat">{{ if ne $cat $label }}{{ $cat }}{{ end }}</span>
+  <span class="cover-title">{{ $label }}</span>
+  <span class="cover-rule"></span>
+</span>
